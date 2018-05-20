@@ -36,9 +36,7 @@ app.use(passport.session());
 
 const generateUserToken = (req, res) => {
     const accessToken = generateAuthToken(req.user);
-    res.send({
-        token: accessToken
-    });
+    res.redirect(`http://localhost:3000/auth/success?token=${accessToken}`);
 };
 
 app.get('/auth/twitter', passport.authenticate('twitter'));
