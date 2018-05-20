@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
-import * as authActions from '../../store/actions/auth';
 
 export default class AuthSuccess extends Component {
     componentDidMount() {

@@ -44,9 +44,7 @@ app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', passport.authenticate('twitter'), generateUserToken);
 
 app.get("/secure", authenticate, (req, res) => {
-    res.send({
-        message: "This route is protected"
-    });
+    res.send(req.user);
 });
 
 

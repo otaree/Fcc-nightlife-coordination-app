@@ -9,7 +9,7 @@ export default (state=initialState, action) => {
         case constants.LOGIN:
             return {
                 ...state,
-                token: action.type
+                token: action.token
             };
         case constants.LOGOUT:
             return {
