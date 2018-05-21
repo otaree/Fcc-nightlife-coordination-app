@@ -76,16 +76,17 @@ app.patch('/bars/business/:id', authenticate, async (req, res) => {
     try {
         let updateBusiness;
         
-        const business = await Bar.findOne({ _id: id, "businesses.id": businessId, "businesses.going": userId  });
+        const business = await Bar.findOne({ _id: id, "businesses.id": businessId });
 
-        if (business) {
-            updateBusiness = await Bar.findOneAndUpdate({ _id: id, "businesses.id": businessId  }, { $pull: { "businesses.$.going": userId } }, { new: true });                        
+        const businesses = business.businesses.find(business => businessId === business.id);
+
+        if (businesses.going.indexOf(userId.toHexString()) !== -1) {
+            updateBusiness = await Bar.findOneAndUpdate({ _id: id, "businesses.id": businessId  }, { $pull: { "businesses.$.going": userId.toHexString() } }, { new: true });                        
         } else {
-            updateBusiness = await Bar.findOneAndUpdate({ _id: id, "businesses.id": businessId  }, { $push: { "businesses.$.going": userId } }, { new: true });            
+            updateBusiness = await Bar.findOneAndUpdate({ _id: id, "businesses.id": businessId  }, { $push: { "businesses.$.going": userId.toHexString() } }, { new: true });            
         }
-        res.send(updateBusiness);
+        res.send({ businesses: updateBusiness });
     } catch (e) {
-        console.log("ERROR", e);
         res.status(400).send(e);
     }
 });

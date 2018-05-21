@@ -9,6 +9,13 @@ export default class Header extends Component {
         location: ''
     };
 
+    componentDidMount() {
+        this.setState({ location: this.props.location });
+        if (this.props.location.trim().length > 0) {
+            this.props.search(this.props.location);
+        }
+    }
+
     changeHandler = e => {
         this.setState({ location: e.target.value });
     }

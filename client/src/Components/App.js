@@ -18,6 +18,10 @@ export  class App extends Component {
         this.props.unsetError()
     };
 
+    toggleHandler = business => {
+        this.props.toggleGoing(this.props.token, this.props.bars.id, business);
+    };
+
     render() {
         return(
             <BrowserRouter>
@@ -30,9 +34,9 @@ export  class App extends Component {
                             </div>
                         )
                     }
-                     <Header search={this.searchHandler} isBusinesses={this.props.businesses.length > 0} loading={this.props.loading} /> 
+                     <Header search={this.searchHandler} isBusinesses={this.props.bars.businesses.length > 0} loading={this.props.loading} location={this.props.location} /> 
                      {
-                         this.props.businesses.length > 0 ? <Main businesses={this.props.businesses} isAuth={this.props.isAuthenticated}  /> : null
+                         this.props.bars.businesses.length > 0 ? <Main businesses={this.props.bars.businesses} isAuth={this.props.isAuthenticated} toggleGoing={this.toggleHandler} /> : null
                      }
                      <Footer /> 
                      <Route path="/auth/success" component={AuthSuccess} />                            
@@ -46,16 +50,18 @@ const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.token !== null,
         token: state.auth.token,
-        businesses: state.business.businesses,
+        bars: state.business.bars,
         loading: state.business.loading,
-        error: state.business.error
+        error: state.business.error,
+        location: state.business.location
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         fetchBusiness: (location) => dispatch(businessActions.fetchBusiness(location)),
-        unsetError: () => dispatch(businessActions.unsetError())
+        unsetError: () => dispatch(businessActions.unsetError()),
+        toggleGoing: (token, id, business) => dispatch(businessActions.toggleGoing(token, id, business))
     };
 };
 

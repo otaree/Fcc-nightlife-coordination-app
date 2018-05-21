@@ -8,6 +8,7 @@ import App from './Components/App';
 import authReducer from './store/reducer/auth';
 import businessReducer from './store/reducer/business';
 import * as authActions from './store/actions/auth';
+import * as businessActions from './store/actions/business';
 import "../node_modules/bulma/css/bulma.min.css";
 import './index.css';
 
@@ -39,4 +40,5 @@ const renderApp = () => {
 ReactDOM.render(<p className="title has-text-centered">Loading...</p>, document.getElementById("root"));
 
 store.dispatch(authActions.authInit());
+store.dispatch(businessActions.businessInit());
 renderApp();

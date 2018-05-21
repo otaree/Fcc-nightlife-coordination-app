@@ -1,5 +1,7 @@
 import React from 'react';
 
+import LoginButton from '../LoginButton/LoginButton';
+
 const Main = props => {
     return (
         <section className="section">
@@ -19,7 +21,9 @@ const Main = props => {
                                         <div className="content">
                                             <p className="is-size-4 has-text-white-ter">{business.name}</p>
                                             <p className="has-text-white-ter is-italic">"{business.review}"</p>
-                                            <button className="button">0</button>
+                                            {
+                                                props.isAuth ? <button className="button" onClick={e => props.toggleGoing(business.id)} >{business.going.length}</button> : <LoginButton>{business.going.length}</LoginButton>
+                                            }
                                         </div>
                                     </div>
                                 </div>

@@ -9,6 +9,6 @@ export default class LoginButton extends Component {
     };
 
     render() {
-        return <button className="button" onClick={this.clickHandler}>Login</button>;
+        return <button className="button" onClick={this.clickHandler}>{this.props.children}</button>;
     }
 }
