@@ -2,6 +2,7 @@ node_modules/
 playground/
 server/config/config.js
 package-lock.json
+.env
 
 client/.gitignore
 client/README.md

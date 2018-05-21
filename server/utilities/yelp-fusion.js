@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const key = process.env.YELP_KEY;
+const key = `Bearer ${process.env.YELP_KEY}`;
 
 const getBusinessData = async location => {
     try {
