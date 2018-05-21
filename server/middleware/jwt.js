@@ -13,13 +13,13 @@ const authenticate = (req, res, next) => {
     try {
         decoded = jwt.verify(token, process.env.JWT_SECRET);
     } catch (e) {
-        return res.status(404).send();
+        return res.status(401).send();
     }
 
     User.findById(decoded._id)
         .then(user => {
             if (!user) {
-                res.status(404).send();
+                res.status(401).send();
             } else {
                 req.user = user;
                 req.token = token;
@@ -27,7 +27,7 @@ const authenticate = (req, res, next) => {
             }
         })
         .catch(e => {
-            res.status(404).send();
+            res.status(401).send();
         });
 };
 

@@ -64,6 +64,32 @@ app.get('/bars/:location', async (req, res) => {
     }
 });
 
+app.patch('/bars/business/:id', authenticate, async (req, res) => {
+    const id = req.params.id;
+    const businessId = req.body.business;
+    const userId = req.user._id;    
+
+    if (!ObjectId.isValid(id)) {
+        return res.status(400).send();
+    }
+
+    try {
+        let updateBusiness;
+        
+        const business = await Bar.findOne({ _id: id, "businesses.id": businessId, "businesses.going": userId  });
+
+        if (business) {
+            updateBusiness = await Bar.findOneAndUpdate({ _id: id, "businesses.id": businessId  }, { $pull: { "businesses.$.going": userId } }, { new: true });                        
+        } else {
+            updateBusiness = await Bar.findOneAndUpdate({ _id: id, "businesses.id": businessId  }, { $push: { "businesses.$.going": userId } }, { new: true });            
+        }
+        res.send(updateBusiness);
+    } catch (e) {
+        console.log("ERROR", e);
+        res.status(400).send(e);
+    }
+});
+
 app.get("/secure", authenticate, (req, res) => {
     res.send(req.user);
 });
