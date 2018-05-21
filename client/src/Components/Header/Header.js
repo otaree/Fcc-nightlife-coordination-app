@@ -34,7 +34,7 @@ export default class Header extends Component {
             <header className={`hero is-primary ${this.props.isBusinesses ? '': "is-medium"}`}>
                 <div className="hero-body">
                     <h1 className="title has-text-centered">Plans Tonight?</h1>
-                    <div className="columns is-centered is-variable is-0">
+                    <div className="columns is-centered is-variable is-0 is-mobile">
                         <div className="column has-text-centered is-1">
                             <MdLocationOn size={60} />
                         </div>
