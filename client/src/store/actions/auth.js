@@ -17,7 +17,6 @@ export const logout = () => {
 
 export const authInit = () => {
     const token = localStorage.getItem("NL_token");
-    console.log("token",token);
     if (token) {
         return {
             type: constants.LOGIN,

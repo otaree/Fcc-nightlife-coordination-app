@@ -1,4 +1,5 @@
-.bg-color {
+body {
     background-color: hsl(171, 100%, 41%);
-    height: 100vh;
+    height: 100%;
+    /* padding: 0; */
 }

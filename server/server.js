@@ -9,6 +9,7 @@ const ObjectId = require('mongoose').Types.ObjectId;
 
 const { mongoose } = require('./db/mongoose');
 const { generateAuthToken, authenticate } = require('./middleware/jwt');
+const { getBusinessData } = require('./utilities/yelp-fusion');
 require('./authentication/twitter');
 
 const port = process.env.PORT || 5000;
@@ -42,6 +43,17 @@ const generateUserToken = (req, res) => {
 app.get('/auth/twitter', passport.authenticate('twitter'));
 
 app.get('/auth/twitter/callback', passport.authenticate('twitter'), generateUserToken);
+
+app.get('/bars/:location', async (req, res) => {
+    const location = req.params.location;
+    
+    try {
+        const businesses = await getBusinessData(location);        
+        res.send({ businesses });
+    } catch (e) {
+        res.status(400).send()
+    }
+});
 
 app.get("/secure", authenticate, (req, res) => {
     res.send(req.user);

@@ -1,15 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
+import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 
 import App from './Components/App';
 import authReducer from './store/reducer/auth';
+import businessReducer from './store/reducer/business';
 import * as authActions from './store/actions/auth';
 import "../node_modules/bulma/css/bulma.min.css";
 import './index.css';
 
-const store = createStore(authReducer);
+const rootReducer = combineReducers({
+    auth: authReducer,
+    business: businessReducer
+});
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; 
+
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
 const jsx = (
     <Provider store={store}>
