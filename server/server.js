@@ -8,6 +8,7 @@ const _ = require('lodash');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 const { mongoose } = require('./db/mongoose');
+const { Bar } = require('./models/Bar');
 const { generateAuthToken, authenticate } = require('./middleware/jwt');
 const { getBusinessData } = require('./utilities/yelp-fusion');
 require('./authentication/twitter');
@@ -45,10 +46,18 @@ app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', passport.authenticate('twitter'), generateUserToken);
 
 app.get('/bars/:location', async (req, res) => {
-    const location = req.params.location;
+    const location = req.params.location.trim().toLowerCase();
     
     try {
-        const businesses = await getBusinessData(location);        
+        let businesses;
+
+        businesses = await Bar.findOne({ location });
+
+        if (!businesses) {
+            businesses = await getBusinessData(location);  
+            const newBar = new Bar({ location, businesses });
+            businesses = await newBar.save();                  
+        }
         res.send({ businesses });
     } catch (e) {
         res.status(400).send()

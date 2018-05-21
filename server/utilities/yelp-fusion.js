@@ -28,6 +28,7 @@ const getBusinessData = async location => {
             business.name = businesses[i].name;
             business.img = businesses[i].image_url;            
             business.review = review.data.reviews[0].text;
+            business.going = [];
             parseBusinessData.push(business);
 
         }
