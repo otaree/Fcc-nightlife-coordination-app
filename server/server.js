@@ -4,8 +4,7 @@ const path = require('path');
 const passport = require('passport');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const _ = require('lodash');
-const ObjectId = require('mongoose').Types.ObjectId;
+const ObjectId = require("mongoose").Types.ObjectId;
 
 const { mongoose } = require('./db/mongoose');
 const { Bar } = require('./models/Bar');
@@ -16,6 +15,7 @@ require('./authentication/twitter');
 const port = process.env.PORT || 5000;
 const app = express();
 
+app.use(express.static(path.join(__dirname, "..", "client", "build")));
 app.use(bodyParser.json());
 // configure CORS
 app.use((req, res, next) => {
@@ -38,7 +38,8 @@ app.use(passport.session());
 
 const generateUserToken = (req, res) => {
     const accessToken = generateAuthToken(req.user);
-    res.redirect(`http://localhost:3000/auth/success?token=${accessToken}`);
+    // res.redirect(`http://localhost:3000/auth/success?token=${accessToken}`);
+    res.redirect(`/auth/success?token=${accessToken}`);
 };
 
 app.get('/auth/twitter', passport.authenticate('twitter'));
@@ -78,6 +79,10 @@ app.patch('/bars/business/:id', authenticate, async (req, res) => {
         
         const business = await Bar.findOne({ _id: id, "businesses.id": businessId });
 
+        if (!business) {
+            throw "No Business";
+        }
+
         const businesses = business.businesses.find(business => businessId === business.id);
 
         if (businesses.going.indexOf(userId.toHexString()) !== -1) {
@@ -91,13 +96,9 @@ app.patch('/bars/business/:id', authenticate, async (req, res) => {
     }
 });
 
-app.get("/secure", authenticate, (req, res) => {
-    res.send(req.user);
-});
-
 
 app.get("*", (req, res) => {
-    res.send("Hello World!");
+    res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
 });
 
 app.listen(port, () => {

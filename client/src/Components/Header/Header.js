@@ -10,8 +10,8 @@ export default class Header extends Component {
     };
 
     componentDidMount() {
-        this.setState({ location: this.props.location });
-        if (this.props.location.trim().length > 0) {
+        if (this.props.location && this.props.location.trim().length > 0) {
+            this.setState({ location: this.props.location });
             this.props.search(this.props.location);
         }
     }

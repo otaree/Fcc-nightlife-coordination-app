@@ -21,7 +21,8 @@ export const fetchBusiness = location => {
             location
         });
         try {
-            const response = await axios.get(`http://localhost:5000/bars/${location}`);
+            // const response = await axios.get(`http://localhost:5000/bars/${location}`);
+            const response = await axios.get(`https://nightlife-coord-app.glitch.me/bars/${location}`);
             dispatch({
                 type: constants.BUSINESS_SET,
                 businesses: response.data
@@ -38,14 +39,13 @@ export const fetchBusiness = location => {
 export const toggleGoing = (token, id, business) => {
     return async dispatch => {
         try {
-            const response = await axios({ url: `http://localhost:5000/bars/business/${id}`, method: "patch" , data: { business }, headers: { 'x-auth': token } });
-            console.log(response);
+            // const response = await axios({ url: `http://localhost:5000/bars/business/${id}`, method: "patch" , data: { business }, headers: { 'x-auth': token } });
+            const response = await axios({ url: `https://nightlife-coord-app.glitch.me/bars/business/${id}`, method: "patch" , data: { business }, headers: { 'x-auth': token } });
             dispatch({
                 type: constants.BUSINESS_SET,
                 businesses: response.data
             });
         } catch (e) {
-            console.log("ERROR", e);
             dispatch({
                 type: constants.BUSINESS_ERROR,
                 value: "NETWORK ERROR"
